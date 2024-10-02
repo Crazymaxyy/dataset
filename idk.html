@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMDb Top 100 Movies Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        canvas { margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>IMDb Top 100 Movies Analysis</h1>
+
+    <h2>1. Top Rated Movies:</h2>
+    <p>The highest-rated movie is <strong>The Godfather</strong> (1972) with a rating of <strong>9.2</strong>.</p>
+    <p>The lowest-rated movie in the top 100 is <strong>Avanti!</strong> (1972) with a rating of <strong>7.2</strong>.</p>
+
+    <h2>2. Distribution of Ratings:</h2>
+    <canvas id="ratingDistribution"></canvas>
+
+    <h2>3. Most Popular Genres:</h2>
+    <canvas id="genreDistribution"></canvas>
+
+    <h2>4. Top 10 Highest-Grossing Movies:</h2>
+    <canvas id="highestGrossing"></canvas>
+
+    <h2>5. Movies Released Over the Years:</h2>
+    <canvas id="moviesPerDecade"></canvas>
+
+    <script>
+        // Data for analysis (replace with actual data)
+        const ratings = [9.2, 8.6, 8.7, 9.3, 8.4, 8.5, 8.7, 8.4, 9, 8.6, 9, 9, 8.4, 9, 8.8, 8.8, 8.5, 8.2, 8.1, 8.6, 8.5, 8.5, 9, 8.8, 8.3, 8.2, 8.2, 8.9, 8.2, 8.5, 8.5, 8.2, 8.4, 8.8, 7.7, 8.8, 8.3, 8.4, 8.3, 8.3, 8.4, 8.2, 8.3, 8.1, 8.3, 8.6, 8.6, 8.1, 8.3, 8.1, 7.8, 8.6, 8.1, 8.4, 8.1, 8.2, 8.3, 8.3, 8.4, 8.6, 8.3, 8.3, 7.9, 8.6, 7.8, 8.2, 7.9, 8.1, 8.6, 8.5, 8.2, 8.5, 8.2, 7.9, 8.2, 7.8, 8.5, 8.1, 8.3];
+        const genres = ['Crime', 'Drama', 'Action', 'Drama', 'Drama', 'Drama', 'Drama', 'Action', 'Action', 'Action', 'Action', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Horror', 'Comedy', 'Action', 'Crime', 'Drama', 'Drama', 'Drama', 'Action', 'Drama', 'Crime', 'Crime', 'Drama', 'Drama', 'Comedy', 'Drama', 'Animation', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Action', 'Drama', 'Drama', 'Drama', 'Drama', 'Action', 'Action', 'Comedy', 'Crime', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Action', 'Comedy', 'Action', 'Comedy', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama', 'Action', 'Drama', 'Action', 'Action', 'Drama', 'Drama', 'Drama', 'Action', 'Action', 'Drama', 'Action', 'Action', 'Drama', 'Action', 'Action', 'Action', 'Drama', 'Drama', 'Action', 'Action', 'Action', 'Drama', 'Drama', 'Drama'];
+
+        // Chart for Distribution of Ratings
+        const ctxRating = document.getElementById('ratingDistribution').getContext('2d');
+        const ratingChart = new Chart(ctxRating, {
+            type: 'histogram',
+            data: {
+                datasets: [{
+                    label: 'Ratings Distribution',
+                    data: ratings,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Ratings'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Frequency'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for Genre Distribution
+        const genreCounts = {};
+        genres.forEach(genre => {
+            genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+        });
+        
+        const ctxGenre = document.getElementById('genreDistribution').getContext('2d');
+        const genreChart = new Chart(ctxGenre, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(genreCounts),
+                datasets: [{
+                    label: 'Number of Movies by Genre',
+                    data: Object.values(genreCounts),
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Movies'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for Top 10 Highest-Grossing Movies (replace with actual data)
+        const movieNames = ['Star Wars: Episode VII - The Force Awakens', 'The Dark Knight Rises', 'The Lord of the Rings: The Return of the King', 'The Dark Knight', 'Star Wars: Episode VI - Return of the Jedi', 'Inception', 'The Hobbit: The Desolation of Smaug', 'Forrest Gump', 'Saving Private Ryan', 'The Avengers'];
+        const grossAmounts = [936.66, 448.14, 377.85, 534.86, 309.13, 292.58, 258.37, 330.25, 216.54, 623.48];
+
+        const ctxGross = document.getElementById('highestGrossing').getContext('2d');
+        const grossChart = new Chart(ctxGross, {
+            type: 'bar',
+            data: {
+                labels: movieNames,
+                datasets: [{
+                    label: 'Gross Revenue (in Millions)',
+                    data: grossAmounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Gross Revenue (in Millions)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for Movies Released Over the Years
+        const years = [1970, 1980, 1990, 2000, 2010, 2020];
+        const movieCounts = [15, 25, 30, 20, 10, 5]; // Replace with actual data
+
+        const ctxYear = document.getElementById('moviesPerDecade').getContext('2d');
+        const decadeChart = new Chart(ctxYear, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Movies Released per Decade',
+                    data: movieCounts,
+                    fill: false,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Decade'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Movies'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
